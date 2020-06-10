@@ -1,0 +1,67 @@
+buildscript {
+	ext {
+		springBootVersion = '2.1.9.RELEASE'
+		springCloudVersion = 'Greenwich.SR3'
+	}
+	repositories {
+		mavenCentral()
+		jcenter()
+       maven {url "https://plugins.gradle.org/m2/"}
+	   mavenLocal()
+	}
+	
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'maven-publish'
+
+group = 'com.customer.service'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+repositories {
+	mavenCentral()
+   mavenLocal()
+}
+dependencies {
+	
+    
+    compile group: 'org.projectlombok', name: 'lombok-maven-plugin', version: '1.18.12.0'
+    // https://mvnrepository.com/artifact/org.modelmapper/modelmapper
+compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.6'
+// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
+compile group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.3.0.RELEASE'
+
+    
+    
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	runtimeOnly 'mysql:mysql-connector-java'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+}
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourceJar {
+                classifier "sources"
+            }
+        }
+    }
+    repositories {
+    }
+}
+project.tasks.publish.dependsOn bootJar
