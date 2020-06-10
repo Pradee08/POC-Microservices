@@ -29,7 +29,7 @@ public class CustomerService {
 		customers.setNumber(String.join(",", number));
 		customers.setType(String.join(",", type));
 		return repo.save(customers);
-		
+
 	}
 
 	public List<Customer> get(String ucrn) {
@@ -60,11 +60,28 @@ public class CustomerService {
 		return listofcustomer;
 	}
 
-//	public void update(Customer customer, String ucrn) {
-//		for(int i=0;i<customer.)
-//		Customers customers = new Customers();
-//		if(customer.getUcrn().equals(ucrn)){
-//			customers.setFirstName(customer.getFirstName());
-//		}
-//	}
+	public void update(Customer customer, String ucrn, List<Customer> customerlist) {
+		int length = customerlist.size();
+		System.out.println(length);
+		for (int i = 0; i < customerlist.size(); i++) {
+			Customer c = customerlist.get(i);
+			if (c.getUcrn().equals(ucrn)) {
+				customerlist.set(i, customer);
+			}
+		}
+		for (Customer customeritem : customerlist) {
+			Customers customers = new Customers();
+			ModelMapper mapper = new ModelMapper();
+			List<String> number = customeritem.getTelephoneNumbers().stream().map(p -> p.getNumber())
+					.collect(Collectors.toList());
+			List<String> type = customeritem.getTelephoneNumbers().stream().map(p -> p.getType())
+					.collect(Collectors.toList());
+			customers.setEnergyAccounts(String.join(",", customeritem.getEnergyAccounts()));
+			customers = mapper.map(customeritem, Customers.class);
+			customers.setNumber(String.join(",", number));
+			customers.setType(String.join(",", type));
+			repo.save(customers);
+		}
+		return;
+	}
 }
