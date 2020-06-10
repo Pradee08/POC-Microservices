@@ -1,12 +1,8 @@
 package com.centrica.controller;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,16 +26,10 @@ public class CustomerServiceController {
 	public void add(@Valid @RequestBody Customer customer) {
 		service.add(customer);
 	}
-	
+
 	@PutMapping("/customers/{ucrn}")
-	public ResponseEntity<?> update(@RequestBody Customer customer,@PathVariable String ucrn){
-		try{
-		
-		//service.update(customer,ucrn);
-		return new ResponseEntity<>(HttpStatus.OK);
-		}
-		catch(NoSuchElementException e){
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+	public void update(@RequestBody Customer customer, @PathVariable String ucrn) {
+		List<Customer> customerlist = service.get(ucrn);
+		service.update(customer, ucrn, customerlist);
 	}
 }
