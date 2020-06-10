@@ -29,10 +29,12 @@ public class CustomerService {
 		customers.setNumber(String.join(",", number));
 		customers.setType(String.join(",", type));
 		return repo.save(customers);
+		
 	}
 
-	public Customer get(String ucrn) {
+	public List<Customer> get(String ucrn) {
 		Customer customer = new Customer();
+		List<Customer> listofcustomer = new ArrayList<Customer>();
 		List<Customers> customerList = repo.findByUcrn(ucrn);
 		ModelMapper mapper = new ModelMapper();
 		for (Customers customers : customerList) {
@@ -53,7 +55,16 @@ public class CustomerService {
 				phonedetails.add(phonenumber);
 			}
 			customer.setTelephoneNumbers(phonedetails);
+			listofcustomer.add(customer);
 		}
-		return customer;
+		return listofcustomer;
 	}
+
+//	public void update(Customer customer, String ucrn) {
+//		for(int i=0;i<customer.)
+//		Customers customers = new Customers();
+//		if(customer.getUcrn().equals(ucrn)){
+//			customers.setFirstName(customer.getFirstName());
+//		}
+//	}
 }
