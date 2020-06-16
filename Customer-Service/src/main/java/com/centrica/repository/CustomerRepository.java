@@ -6,4 +6,5 @@ import com.centrica.model.Customers;
 
 public interface CustomerRepository extends JpaRepository<Customers, Integer> {
 	List<Customers> findByUcrn(String ucrn);
+	Customers findById(int id);
 }
