@@ -24,8 +24,8 @@ public class CustomerService {
 		List<String> number = customer.getTelephoneNumbers().stream().map(p -> p.getNumber())
 				.collect(Collectors.toList());
 		List<String> type = customer.getTelephoneNumbers().stream().map(p -> p.getType()).collect(Collectors.toList());
-		customers.setEnergyAccounts(String.join(",", customer.getEnergyAccounts()));
 		customers = mapper.map(customer, Customers.class);
+		customers.setEnergyAccounts(customer.getEnergyAccounts().toString().replace("[", "").replace("]", ""));
 		customers.setNumber(String.join(",", number));
 		customers.setType(String.join(",", type));
 		repo.save(customers);
