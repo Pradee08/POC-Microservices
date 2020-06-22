@@ -21,34 +21,43 @@ import com.centrica.service.CustomerService;
 public class CustomerServiceController {
 	@Autowired
 	private CustomerService service;
-	@GetMapping
-	public  ResponseEntity<List<Customer>> retrieve(@RequestParam String ucrn) {
-		try{
-		List<Customer> customer=service.retrieve(ucrn);
-		if(!customer.isEmpty())
-			return new ResponseEntity<List<Customer>>(customer,HttpStatus.OK);
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		catch(Exception e){
+
+	@GetMapping("/{id}")
+	public ResponseEntity<Customer> retrieve(@PathVariable int id) {
+		try {
+			Customer customer = service.retrivecustomer(id);
+			return new ResponseEntity<>(customer, HttpStatus.OK);
+		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-				
+
+	@GetMapping
+	public ResponseEntity<List<Customer>> retrieve(@RequestParam String ucrn) {
+		try {
+			List<Customer> customer = service.retrieve(ucrn);
+			if (!customer.isEmpty())
+				return new ResponseEntity<List<Customer>>(customer, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
 	@PostMapping
 	public ResponseEntity<?> add(@Valid @RequestBody Customer customer) {
 		service.add(customer);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
-	
+
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@RequestBody Customer customer, @PathVariable int id) {
-		try{
-			Customer existCustomer= service.retrivecustomer(id);
+		try {
+			Customer existCustomer = service.retrivecustomer(id);
 			service.update(customer, id, existCustomer);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-	catch(Exception e){
+		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	}
+		}
 	}
 }
