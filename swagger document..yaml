@@ -1,0 +1,401 @@
+swagger: '2.0'
+info:
+  description: About customers and accounts endpoints
+  version: 1.0.0
+  title: Swagger document
+tags:
+  - name: customer
+    description: Operations about customer
+  - name: account
+    description: Operations about account
+schemes:
+  - https
+  - http
+paths:
+  /customers:
+    post:
+      tags:
+        - customers
+      summary: Create customer
+      description: Customer account will be created.
+      operationId: createUser
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Created user object
+          required: true
+          schema:
+            $ref: '#/definitions/Customer'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: 'Invalid syntax '
+        '500':
+          description: Internal server error
+    get:
+      tags:
+        - customers
+      summary: 'Get all customer '
+      description: ''
+      operationId: getAllCustomer
+      produces:
+        - application/xml
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Customer'
+        '400':
+          description: Invalid syntax
+        '404':
+          description: Customer not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - customers
+      summary: Delete all customer
+      description: Error will be throw when try to delete an active account
+      operationId: deleteCustomer
+      produces:
+        - application/xml
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+        '204':
+          description: Request successful but no response body
+        '400':
+          description: Invalid syntax
+        '404':
+          description: Customer not found
+  '/customers/{id}':
+    get:
+      tags:
+        - customers
+      summary: Get customer by id
+      description: ''
+      operationId: getCustomerById
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 'The customer that needs to be fetched by providing id '
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Customer'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Customer not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - customers
+      summary: Updated customer
+      description: This can only be done by the logged in customer.
+      operationId: updateCustomer
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: customer details that need to be updated
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Updated customer object
+          required: true
+          schema:
+            $ref: '#/definitions/Customer'
+      responses:
+        '204':
+          description: Request successful but no response body
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Customer not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - customers
+      summary: Delete customer
+      description: Error will be throw when try to delete an active account
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: Error will be throw when try to delete an active account
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+        '204':
+          description: Request successful but no response body
+        '400':
+          description: Invalid syntax
+        '404':
+          description: Customer not found
+  /accounts:
+    post:
+      tags:
+        - accounts
+      summary: Create accounts
+      description:  Account will be created.
+     
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Created Account object
+          required: true
+          schema:
+            $ref: '#/definitions/Account'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: 'Invalid syntax '
+        '500':
+          description: Internal server error
+    get:
+      tags:
+        - accounts
+      summary: Get all account
+      produces:
+        - application/xml
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Account'
+        '400':
+          description: Invalid customerAccountID supplied
+        '404':
+          description: Account not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - accounts
+      summary: Delete all account
+      description: This can only be done by the logged in customer.
+      operationId: deleteAccount
+      produces:
+        - application/xml
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+        '204':
+          description: Request successful but no response body
+        '400':
+          description: Invalid customerAccountID supplied
+        '404':
+          description: Account not found
+  '/accounts/{id}':
+    get:
+      tags:
+        - accounts
+      summary: Get account by id
+      description: ''
+      operationId: getCustomerByid
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: 'The account that needs to be fetced by providing accountID. '
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Account'
+        '400':
+          description: Invalid accountID supplied
+        '404':
+          description: Account not found
+        '500':
+          description: Internal server error
+    put:
+      tags:
+        - accounts
+      summary: Updated account
+      description: This can only be done by the logged in customer.
+      operationId: updateAccount
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: account that need to be updated
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Updated account object
+          required: true
+          schema:
+            $ref: '#/definitions/Account'
+      responses:
+        '204':
+          description: Request successful but no response body
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Account not found
+        '500':
+          description: Internal server error
+    delete:
+      tags:
+        - accounts
+      summary: Delete account
+      description: This can only be done by the logged in customer.
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: The account that needs to be deleted
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+        '204':
+          description: Request successful but no response body
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Account not found
+definitions:
+  Customer:
+    type: object
+    properties:
+      id:
+        type: string
+      ucrn:
+        type: string
+      title:
+        type: string
+      firstName:
+        type: string
+      lastname:
+        type: string
+      telephoneNumbers:
+        type: "array"
+        xml:
+          name: "account"
+          wrapped: true
+        items:
+          $ref: "#/definitions/TelephoneNumber"
+      dateOfBirth:
+        type: string
+        format: "date"
+      email:
+        type: string
+      energyAccounts:
+        type: "array"
+        xml:
+          name: "id"
+          wrapped: true
+        items:
+          type: "string"
+      correspondenceAddress:
+        $ref: "#/definitions/Address"
+  
+  Account:
+    type: object
+    properties:
+      holderName:
+        type: "string"
+      id:
+        type: "string"
+      type:
+        type: "string"
+      status:
+        type: "string"
+      paymentType:
+        type: "string"
+      tariffdetails:
+          $ref: "#/definitions/Tariff"  
+      address:
+        $ref: "#/definitions/Address"
+  Address:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      flatNumber:
+        type: "string"
+      houseNumber:
+        type: "string"
+      addressLine1:
+        type: "string"
+      addressLine2:
+        type: "string"
+      postalTown:
+        type: "string"
+      county:
+        type: "string"
+      country:
+        type: "string"
+      postcode:
+        type: "string"
+  TelephoneNumber:
+    type: "object"
+    properties:
+      number:
+        type: "string"
+      type:
+        type: "string"
+  Tariff:
+    type: "object"
+    properties:
+      tariffName:
+        type: "string"
+      unitRate:
+        type: "integer"
+      standingCharge:
+        type: "integer"
+      personal-projection:
+        type: "integer"
+      estimated-annual-consumption:
+        type: "integer"
+      supplier-name:
+        type: "string"
+      cancellation-charge:
+        type: "string"
+      end-date:
+        type: string
+        format: "date"
+      
+      
+  
+    
