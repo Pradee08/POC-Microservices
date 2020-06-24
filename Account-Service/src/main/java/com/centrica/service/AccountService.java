@@ -52,10 +52,12 @@ public class AccountService {
 
 	public void update(Account account, String id, Account existAccount) {
 		ModelMapper mapper = new ModelMapper();
-		ModelMapper mapper1 = new ModelMapper();
 		if (existAccount.getId().equals(id)) {
 			existAccount = mapper.map(account, Account.class);
 			Accounts accounts = new Accounts();
+			ModelMapper mapper1 = new ModelMapper();
+			mapper1.getConfiguration().setAmbiguityIgnored(true);
+			accounts = mapper1.map(existAccount, Accounts.class);
 			accounts.setSupplierName(existAccount.getTariffDetails().getSupplierName());
 			accounts.setUnitRate(existAccount.getTariffDetails().getUnitRate());
 			accounts.setStandingCharge(existAccount.getTariffDetails().getStandingCharge());
@@ -64,7 +66,6 @@ public class AccountService {
 			accounts.setCancellationCharge(existAccount.getTariffDetails().getCancellationCharge());
 			accounts.setEndDate(existAccount.getTariffDetails().getEndDate());
 			accounts.setTariffName(existAccount.getTariffDetails().getTariffName());
-			accounts = mapper1.map(existAccount, Accounts.class);
 			repo.save(accounts);
 		}
 		return;
