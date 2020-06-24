@@ -36,13 +36,12 @@ public class AccountServiceController {
 				String id = account.getId();
 				if (id.equalsIgnoreCase(accountid)) {
 					service.add(account);
-					return new ResponseEntity<>(HttpStatus.CREATED);
 				}
 			}
+			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception ex) {
-			System.out.println(ex);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return null;
 	}
 
 	@GetMapping("/{id}")
@@ -67,13 +66,16 @@ public class AccountServiceController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable String id) {
+	public ResponseEntity<?> delete(@PathVariable String id) throws Exception {
 		try {
+			Account account = service.retrieve(id);
+			if(account.getStatus().equalsIgnoreCase("open")){
+				throw new Exception("Should not delete account if the account status is open");
+			}
 			service.delete(id);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			throw e;
 		}
 	}
-
 }
