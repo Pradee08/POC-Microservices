@@ -51,8 +51,6 @@ paths:
         description: "Ucrn values that need to be considered for filter"
         required: true
         type: "string"
-        default: ""
-        collectionFormat: "multi"
       responses:
         "200":
           description: "successful operation"
