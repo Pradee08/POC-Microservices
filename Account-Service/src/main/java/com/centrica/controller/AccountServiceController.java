@@ -28,16 +28,16 @@ public class AccountServiceController {
 	private AccountService service;
 
 	@PostMapping
-	public ResponseEntity<?> add(@Valid @RequestBody Account account) {
+	public ResponseEntity<?> createAccount(@Valid @RequestBody Account account) {
 		try {
 			Customer customer = feignService.getData(account.getCustomerId());
 			List<String> energyaccount = customer.getEnergyAccounts();
-			for (String accountid : energyaccount) {
+			energyaccount.forEach(accountid -> {
 				String id = account.getId();
 				if (id.equalsIgnoreCase(accountid)) {
 					service.add(account);
 				}
-			}
+			});
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -45,7 +45,7 @@ public class AccountServiceController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Account> retrieve(@PathVariable String id) {
+	public ResponseEntity<Account> retrieveAccountById(@PathVariable String id) {
 		try {
 			Account accountdetails = service.retrieve(id);
 			return new ResponseEntity<>(accountdetails, HttpStatus.OK);
@@ -55,7 +55,7 @@ public class AccountServiceController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@RequestBody Account account, @PathVariable String id) {
+	public ResponseEntity<?> updateAccount(@RequestBody Account account, @PathVariable String id) {
 		try {
 			Account existAccount = service.retrieve(id);
 			service.update(account, id, existAccount);
@@ -66,7 +66,7 @@ public class AccountServiceController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable String id) throws Exception {
+	public ResponseEntity<?> deleteAccount(@PathVariable String id) throws Exception {
 		try {
 			Account account = service.retrieve(id);
 			if(account.getStatus().equalsIgnoreCase("open")){
