@@ -18,7 +18,7 @@ paths:
         - customers
       summary: Create customer
       description: Customer account will be created.
-      operationId: createUser
+      operationId: createCustomer
       produces:
         - application/xml
         - application/json
@@ -38,49 +38,35 @@ paths:
           description: Internal server error
     get:
       tags:
-        - customers
-      summary: 'Get all customer '
-      description: ''
-      operationId: getAllCustomer
+      - "customers"
+      summary: "Find Customers by ucrn"
+      description: Retrieve customers by ucrn
+      operationId: "retrieveCustomerByUcrn"
       produces:
-        - application/xml
-        - application/json
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "ucrn"
+        in: "query"
+        description: "Ucrn values that need to be considered for filter"
+        required: true
+        type: "string"
+        default: ""
+        collectionFormat: "multi"
       responses:
-        '200':
-          description: successful operation
+        "200":
+          description: "successful operation"
           schema:
-            $ref: '#/definitions/Customer'
-        '400':
-          description: Invalid syntax
-        '404':
-          description: Customer not found
-        '500':
-          description: Internal server error
-    delete:
-      tags:
-        - customers
-      summary: Delete all customer
-      description: Error will be throw when try to delete an active account
-      operationId: deleteCustomer
-      produces:
-        - application/xml
-        - application/json
-      responses:
-        '200':
-          description: successful operation
-        '204':
-          description: Request successful but no response body
-        '400':
-          description: Invalid syntax
-        '404':
-          description: Customer not found
+              $ref: "#/definitions/Customer"
+        "400":
+          description: "Invalid ucrn value"
   '/customers/{id}':
     get:
       tags:
         - customers
       summary: Get customer by id
-      description: ''
-      operationId: getCustomerById
+      description: Retrieve customers by id
+      operationId: retrieveCustomerById
       produces:
         - application/xml
         - application/json
@@ -104,7 +90,7 @@ paths:
     put:
       tags:
         - customers
-      summary: Updated customer
+      summary: Update customer
       description: This can only be done by the logged in customer.
       operationId: updateCustomer
       produces:
@@ -136,6 +122,7 @@ paths:
         - customers
       summary: Delete customer
       description: Error will be throw when try to delete an active account
+      operationId: deleteCustomer
       produces:
         - application/xml
         - application/json
@@ -160,7 +147,7 @@ paths:
         - accounts
       summary: Create accounts
       description:  Account will be created.
-     
+      operationId: createAccount
       produces:
         - application/xml
         - application/json
@@ -178,49 +165,13 @@ paths:
           description: 'Invalid syntax '
         '500':
           description: Internal server error
-    get:
-      tags:
-        - accounts
-      summary: Get all account
-      produces:
-        - application/xml
-        - application/json
-      responses:
-        '200':
-          description: successful operation
-          schema:
-            $ref: '#/definitions/Account'
-        '400':
-          description: Invalid customerAccountID supplied
-        '404':
-          description: Account not found
-        '500':
-          description: Internal server error
-    delete:
-      tags:
-        - accounts
-      summary: Delete all account
-      description: This can only be done by the logged in customer.
-      operationId: deleteAccount
-      produces:
-        - application/xml
-        - application/json
-      responses:
-        '200':
-          description: successful operation
-        '204':
-          description: Request successful but no response body
-        '400':
-          description: Invalid customerAccountID supplied
-        '404':
-          description: Account not found
   '/accounts/{id}':
     get:
       tags:
         - accounts
       summary: Get account by id
       description: ''
-      operationId: getCustomerByid
+      operationId: retrieveAccountById
       produces:
         - application/xml
         - application/json
@@ -244,8 +195,8 @@ paths:
     put:
       tags:
         - accounts
-      summary: Updated account
-      description: This can only be done by the logged in customer.
+      summary: Update account
+      description: This can only be done by the logged in account.
       operationId: updateAccount
       produces:
         - application/xml
@@ -275,7 +226,8 @@ paths:
       tags:
         - accounts
       summary: Delete account
-      description: This can only be done by the logged in customer.
+      description: This can only be done by the logged in account.
+      operationId: deleteAccount
       produces:
         - application/xml
         - application/json
